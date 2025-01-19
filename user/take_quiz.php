@@ -140,12 +140,40 @@ $remaining_time = $end_time - time();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($attempt['title']) ?></title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #6B46C1;
+            --secondary-color: #9F7AEA;
+            --accent-color: #553C9A;
+            --text-dark: #2D3748;
+            --text-light: #FFFFFF;
+            --background: #F8F7FF;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background: var(--background);
+            color: var(--text-dark);
+        }
+
+        nav {
+            background-color: var(--text-light);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(107, 70, 193, 0.1);
+        }
+
+        nav h1 {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--primary-color);
         }
 
         .container {
@@ -155,74 +183,60 @@ $remaining_time = $end_time - time();
         }
 
         .quiz-header {
-            background: white;
+            background: var(--text-light);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.1);
         }
 
         .timer {
             float: right;
             font-size: 1.2em;
-            color: #dc3545;
+            color: var(--primary-color);
             font-weight: bold;
         }
 
         .question-card {
-            background: white;
+            background: var(--text-light);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(107, 70, 193, 0.2);
         }
 
         .answer-option {
             margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .answer-option:hover {
-            background-color: #f8f9fa;
+            border-color: var(--secondary-color);
+            background-color: var(--background);
         }
 
         .answer-option.selected {
-            background-color: #cce5ff;
-            border-color: #b8daff;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .btn-success {
-            background-color: #28a745;
-            color: white;
+            background-color: var(--secondary-color);
+            border-color: var(--primary-color);
+            color: var(--text-light);
         }
 
         .progress-bar {
-            background: white;
-            border-radius: 8px;
-            padding: 10px;
+            background: var(--text-light);
+            border-radius: 15px;
+            padding: 20px;
             margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.1);
         }
 
         .question-list {
@@ -232,38 +246,71 @@ $remaining_time = $end_time - time();
         }
 
         .question-number {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background: #f8f9fa;
+            background: var(--background);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
             cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
 
         .question-number.answered {
-            background: #28a745;
-            color: white;
+            background: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
         }
 
         .save-btn {
-            margin-top: 10px;
-            background-color: #007bff;
-            color: white;
+            background-color: var(--secondary-color);
+            color: var(--text-light);
             border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
         }
 
         .save-btn:hover {
-            background-color: #0056b3;
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
         }
     </style>
 </head>
 
 <body>
+
     <div class="container">
         <div class="quiz-header">
             <div class="timer" id="timer">Time remaining: calculating...</div>

@@ -78,39 +78,74 @@ $accuracy_rate = $answered_questions > 0 ? ($correct_answers / $answered_questio
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Results - <?= htmlspecialchars($attempt['title']) ?></title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #6B46C1;
+            --secondary-color: #9F7AEA;
+            --accent-color: #553C9A;
+            --text-dark: #2D3748;
+            --text-light: #FFFFFF;
+            --background: #F8F7FF;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: var(--background);
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            color: var(--text-dark);
+        }
+
+        nav {
+            background-color: var(--text-light);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(107, 70, 193, 0.1);
+        }
+
+        nav h1 {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+
+        .nav-links a:hover {
+            background-color: var(--background);
+            color: var(--primary-color);
         }
 
         .container {
             max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-
-        .navbar {
-            background-color: #333;
-            padding: 15px;
-            color: white;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            margin-right: 10px;
+            margin: 2rem auto;
+            padding: 0 2rem;
         }
 
         .result-header {
-            background: white;
+            background: var(--text-light);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.1);
         }
 
         .stats-grid {
@@ -121,35 +156,63 @@ $accuracy_rate = $answered_questions > 0 ? ($correct_answers / $answered_questio
         }
 
         .stat-card {
-            background: white;
+            background: var(--text-light);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(107, 70, 193, 0.2);
         }
 
         .stat-value {
             font-size: 24px;
             font-weight: bold;
             margin: 10px 0;
-        }
-
-        .questions-review {
-            margin-top: 30px;
+            color: var(--primary-color);
         }
 
         .question-card {
-            background: white;
+            background: var(--text-light);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(107, 70, 193, 0.2);
+        }
+
+        .result-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .pass {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .fail {
+            background-color: #f8d7da;
+            color: #721c24;
         }
 
         .answer {
             margin: 10px 0;
-            padding: 10px;
-            border-radius: 4px;
+            padding: 12px;
+            border-radius: 8px;
+            transition: transform 0.2s;
         }
 
         .correct-answer {
@@ -170,47 +233,40 @@ $accuracy_rate = $answered_questions > 0 ? ($correct_answers / $answered_questio
             color: #856404;
         }
 
-        .result-badge {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .pass {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .fail {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
         .btn {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
+            background-color: var(--primary-color);
+            color: var(--text-light);
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 8px;
             margin-top: 20px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
         }
 
         .btn:hover {
-            background-color: #0056b3;
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
         }
     </style>
 </head>
 
 <body>
-    <div class="navbar">
-        <a href="dashboard.php">Dashboard</a>
-        <a href="available_quizzes.php">Available Quizzes</a>
-        <a href="my_results.php">My Results</a>
-        <a href="../logout.php" style="float: right;">Logout</a>
-    </div>
+    <nav>
+        <h1>E-quiz</h1>
+        <div class="nav-links">
+            <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="available_quizzes.php"><i class="fas fa-book"></i> Quizzes</a>
+            <a href="my_results.php"><i class="fas fa-chart-bar"></i> Results</a>
+            <a href="../logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
 
     <div class="container">
         <div class="result-header">
@@ -249,7 +305,7 @@ $accuracy_rate = $answered_questions > 0 ? ($correct_answers / $answered_questio
         </div>
 
         <div class="questions-review">
-            <h2>Questions Review</h2>
+            <h2><i class="fas fa-tasks"></i> Questions Review</h2>
             <?php $question_num = 1; ?>
             <?php foreach ($questions as $question): ?>
                 <div class="question-card">
@@ -281,7 +337,9 @@ $accuracy_rate = $answered_questions > 0 ? ($correct_answers / $answered_questio
             <?php endforeach; ?>
         </div>
 
-        <a href="available_quizzes.php" class="btn">Back to Quizzes</a>
+        <a href="available_quizzes.php" class="btn">
+            <i class="fas fa-arrow-left"></i> Back to Quizzes
+        </a>
     </div>
 </body>
 
